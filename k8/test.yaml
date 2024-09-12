@@ -1,1 +1,32 @@
-test
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-ng-deployment
+  namespace: default
+  labels:
+    app: test-ng
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-ng
+  template:
+    metadata:
+      labels:
+        app: test-ng
+    spec:
+      containers:
+        - name: test-ng-container
+          image: your-registry/your-repo/test-ng:latest  # Replace with your image
+          ports:
+            - containerPort: 8080  # Replace with your container port
+          env:
+            - name: ENVIRONMENT
+              value: "test"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config  # Replace with your mount path
+      volumes:
+        - name: config-volume
+          configMap:
+            name: test-ng-config  # Replace with your ConfigMap name if needed
